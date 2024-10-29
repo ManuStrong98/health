@@ -5,7 +5,7 @@ const { Pool } = pg
 
 export const pool = new Pool({
   user: 'postgres',
-  password: '37494',
+  password: 'tTyxawnuBeWedvQTwPrakOhJnDwNKfXp',
   host: 'junction.proxy.rlwy.net',
   database: 'railway',
   port: 37494
