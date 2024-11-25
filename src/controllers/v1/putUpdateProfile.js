@@ -1,15 +1,20 @@
-import { putUserProfile } from "../../models/v1/index.js"
-import { MissingCredentialsError } from "../../utils/CustomError.js"
+import { putUserProfile, getUserByEmail } from "../../models/v1/index.js"
+import { MissingCredentialsError, EmailExistsError} from "../../utils/CustomError.js"
 
 export const putUpdateProfile = async (req, res) => {
-  const {email, genero, nacimiento, pais, number} = req.body
-
+  const {actualEmail, email, nacimiento, nombre, apellidos, perfil, username, pais, telefono, genero} = req.body
+ 
   try {
     if (!email) {
       throw new MissingCredentialsError()
     }
+    
+    const user = await getUserByEmail(email)
+    if (user && actualEmail !== email) {
+      throw new EmailExistsError()
+    }
 
-    await putUserProfile(email, genero, nacimiento, pais, number)
+    await putUserProfile(actualEmail, email, nacimiento, nombre, apellidos, perfil, username, pais, telefono, genero)
     res.status(201).send('datos de perfil cambiados correctamente')
   } catch (err) {
     console.error('CONTROLLER putUpdateProfile:', err)
